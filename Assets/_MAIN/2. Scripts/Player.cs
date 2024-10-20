@@ -12,6 +12,9 @@ public class Player : MonoBehaviour
     public float cameraHorSpeed;
     public float cameraVerSpeed;
     public ViewTarget vTarget;
+    public Hand rightHand;
+    public Hand leftHand;
+    PickItem rPick;
     private void Awake()
     {
         instance = this;
@@ -20,39 +23,55 @@ public class Player : MonoBehaviour
     {
         preMousePosition = Input.mousePosition;
     }
-    private void Update()
+    private void FixedUpdate()
     {
         if (!isVR)
         {
+            Vector3 chig = Vector3.zero;
             if (Input.GetKey(KeyCode.W))
             {
-
+                chig.z += 1;
             }
             if (Input.GetKey(KeyCode.A))
             {
-
+                chig.x += -1;
             }
             if (Input.GetKey(KeyCode.S))
             {
-
+                chig.z += -1;
             }
             if (Input.GetKey(KeyCode.D))
             {
-
+                chig.x += 1;
             }
             if (Input.GetKey(KeyCode.Q))
             {
-
+                chig.y += 1;
             }
             if (Input.GetKey(KeyCode.E))
             {
-
+                chig.y += -1;
+            }
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                if (rightHand.items.Count > 0)
+                {
+                    rightHand.items[0].Pick(rightHand.target);
+                    rPick = rightHand.items[0];
+                }
+            }
+            if(Input.GetKeyDown(KeyCode.X)){
+                if(rPick!=null){
+                    rPick.Back();
+                }
+                rPick = null;
             }
             if (Input.GetKey(KeyCode.Space))
             {
                 vTarget?.Click();
-                
+
             }
+            rightHand.Move(chig.normalized);
             Vector3 mouseDelta = Input.mousePosition - preMousePosition;
             transform.eulerAngles += Vector3.up * (cameraHorSpeed * Time.deltaTime * mouseDelta.x);
             Vector3 rot = cameraParent.eulerAngles;
