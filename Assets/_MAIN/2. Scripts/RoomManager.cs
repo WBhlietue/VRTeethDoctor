@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Dreamteck.Splines;
+using UnityEngine.Rendering;
 
 public class RoomManager : MonoBehaviour
 {
@@ -12,23 +14,35 @@ public class RoomManager : MonoBehaviour
     public float doorDuration;
     public float moveSpeed;
     public float rotDuration;
+    public SplineFollower follower;
+    bool updateActive = false;
+    bool goInside = false;
     private void Awake()
     {
         instance = this;
     }
     public void GotoInside()
     {
-        Player.instance.transform.DORotate(Vector3.up * -90, rotDuration);
-        Player.instance.transform.DOMove(gotoInnerRoomPos.position, Vector3.Distance(Player.instance.transform.position, gotoInnerRoomPos.position) / moveSpeed).SetEase(Ease.Linear).OnComplete(() =>
+        follower.followSpeed = moveSpeed;
+        updateActive = true;
+        goInside = true;
+        door.DORotate(new Vector3(-90, -90, 0), doorDuration);
+
+    }
+    private void Update()
+    {
+        if (!updateActive)
         {
-            door.DORotate(new Vector3(-90, -90, 0), doorDuration).OnComplete(() =>
+            return;
+        }
+        if (goInside)
+        {
+            if (follower.GetPercent() >= 1)
             {
-                Player.instance.transform.DOMove(innerRoomPos.position, Vector3.Distance(Player.instance.transform.position, innerRoomPos.position) / moveSpeed).SetEase(Ease.Linear).OnComplete(() =>
-                {
-                    door.DORotate(new Vector3(-90, 0, 0), doorDuration);
-                });
-            });
-        });
+                updateActive = false;
+                door.DORotate(new Vector3(-90, 0, 0), doorDuration);
+            }
+        }
     }
 
 }

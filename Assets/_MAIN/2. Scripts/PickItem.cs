@@ -6,6 +6,7 @@ public class PickItem : MonoBehaviour
 {
     public Vector3 initPos;
     public Quaternion initRot;
+    float time = 0.3f;
     private void Start()
     {
         initPos = transform.position;
@@ -22,26 +23,26 @@ public class PickItem : MonoBehaviour
     }
     IEnumerator MoveHand(Vector3 startPos, Transform endPos)
     {
-        Vector3 height = (startPos + endPos.position) / 2 + Vector3.up * 0;
+        Vector3 height = (startPos + endPos.position) / 2 + Vector3.up * 2;
         Quaternion rot = transform.rotation;
-        for (float i = 0; i < 1; i += Time.deltaTime)
+        for (float i = 0; i < time; i += Time.deltaTime)
         {
-            transform.position = BezierManager.GetBezier(startPos, height, endPos.position, i);
-            transform.rotation = Quaternion.Lerp(rot, endPos.rotation, i);
+            transform.position = Vector3.Lerp(startPos, endPos.position, i / time);
+            transform.rotation = Quaternion.Lerp(rot, endPos.rotation, i / time);
             yield return 0;
         }
         transform.parent = endPos;
-        transform.position = endPos.position;
-        transform.rotation = endPos.rotation;
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
     }
     IEnumerator MoveBack(Vector3 startPos)
     {
-        Vector3 height = (startPos + initPos) / 2 + Vector3.up * 0;
+        Vector3 height = (startPos + initPos) / 2 + Vector3.up * 0.3f;
         Quaternion rot = transform.rotation;
-        for (float i = 0; i < 1; i += Time.deltaTime)
+        for (float i = 0; i < time; i += Time.deltaTime)
         {
-            transform.position = BezierManager.GetBezier(startPos, height, initPos, i);
-            transform.rotation = Quaternion.Lerp(rot, initRot, i);
+            transform.position = BezierManager.GetBezier(startPos, height, initPos, i / time);
+            transform.rotation = Quaternion.Lerp(rot, initRot, i / time);
             yield return 0;
         }
         transform.parent = null;

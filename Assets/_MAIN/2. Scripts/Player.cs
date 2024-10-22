@@ -60,8 +60,10 @@ public class Player : MonoBehaviour
                     rPick = rightHand.items[0];
                 }
             }
-            if(Input.GetKeyDown(KeyCode.X)){
-                if(rPick!=null){
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                if (rPick != null)
+                {
                     rPick.Back();
                 }
                 rPick = null;
@@ -93,5 +95,31 @@ public class Player : MonoBehaviour
             preMousePosition = Input.mousePosition;
 
         }
+    }
+
+    public bool TargetClick()
+    {
+        if (vTarget == null)
+        {
+            return false;
+        }
+        vTarget.Click();
+        return true;
+    }
+    public void RightPickItem()
+    {
+        if (rightHand.items.Count > 0)
+        {
+            rightHand.items[0].Pick(rightHand.target);
+            rPick = rightHand.items[0];
+        }
+    }
+    public void RightDownItem()
+    {
+        if (rPick != null)
+        {
+            rPick.Back();
+        }
+        rPick = null;
     }
 }

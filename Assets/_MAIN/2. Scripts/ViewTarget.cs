@@ -19,7 +19,7 @@ public class ViewTarget : MonoBehaviour
     private void Update()
     {
         float value = Vector3.Dot(cam.transform.forward, (transform.position - cam.transform.position).normalized);
-        Debug.Log(value);
+
         if (value > sensutive)
         {
             Active();

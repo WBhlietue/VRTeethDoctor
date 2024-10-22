@@ -14,6 +14,6 @@ public class Hand : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        transform.localPosition += chig * moveSpeed * Time.deltaTime;
+        transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, moveSpeed*Time.deltaTime);
     }
 }

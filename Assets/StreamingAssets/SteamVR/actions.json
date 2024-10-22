@@ -81,6 +81,38 @@
       "name": "/actions/mixedreality/in/ExternalCamera",
       "type": "pose",
       "requirement": "optional"
+    },
+    {
+      "name": "/actions/VRControls/in/LeftBig",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/VRControls/in/LeftLittle",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/VRControls/in/LeftB",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/VRControls/in/LeftA",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/VRControls/in/RIghtBig",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/VRControls/in/RightLittle",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/VRControls/in/RightA",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/VRControls/in/RightB",
+      "type": "boolean"
     }
   ],
   "action_sets": [
@@ -99,6 +131,14 @@
     {
       "name": "/actions/mixedreality",
       "usage": "single"
+    },
+    {
+      "name": "/actions/V_R",
+      "usage": "single"
+    },
+    {
+      "name": "/actions/VRControls",
+      "usage": "leftright"
     }
   ],
   "default_bindings": [
