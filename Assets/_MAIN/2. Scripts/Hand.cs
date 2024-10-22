@@ -8,10 +8,12 @@ public class Hand : MonoBehaviour
     public Vector3 chig;
     public Transform target;
     public List<PickItem> items = new List<PickItem>();
-    public void Move(Vector3 c){
+    public void Move(Vector3 c)
+    {
         chig = c;
     }
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
         transform.localPosition += chig * moveSpeed * Time.deltaTime;
     }
 }
