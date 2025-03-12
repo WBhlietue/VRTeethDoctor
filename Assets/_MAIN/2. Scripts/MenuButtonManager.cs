@@ -32,7 +32,7 @@ public class MenuButtonManager : MonoBehaviour
     {
         if (selectedNum >= 0)
         {
-            SceneSwitch.instance.Call("VR");
+            SceneSwitch.instance.Call("VR 1");
         }
     }
 }

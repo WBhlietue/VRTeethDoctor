@@ -1,18 +1,25 @@
 using UnityEngine;
+using DG.Tweening;
 
-public class Shahuur : FingerTrackParent
+public class Shahuur : MonoBehaviour
 {
-    public override void OnActive()
+    public Transform backShahuur;
+    public float duration;
+    public float targetValue;
+    float initValue;
+    public void Start()
     {
-        Debug.Log("active");
-        // transform.parent = Player.instance.rightHand.fingers[1].transform;
-        transform.parent = Player.instance.rightHand.target;
+        initValue = backShahuur.localPosition.y;
     }
-    public override void OnDeActive()
+    public void OnShahah()
     {
-        // Debug.Break();
-        transform.parent = null;
-        // GetComponent<PickItem>().Back();
+        backShahuur.DOLocalMoveY(targetValue, duration).OnComplete(() =>
+        {
+            backShahuur.DOLocalMoveY(initValue, duration).OnComplete(() =>
+            {
+                Debug.Log("Over");
+            });
+        });
+    }
 
-    }
 }

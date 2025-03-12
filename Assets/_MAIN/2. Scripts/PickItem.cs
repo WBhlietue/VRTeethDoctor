@@ -9,26 +9,33 @@ public class PickItem : MonoBehaviour
     float time = 0.3f;
     public int type;
     public Transform taregetPos;
+    bool preKinematic;
+    Rigidbody rb;
     private void Start()
     {
         initPos = transform.position;
         initRot = transform.rotation;
+        rb = GetComponent<Rigidbody>();
+        preKinematic = rb.isKinematic;
     }
-    public void Pick(Transform target)
+    // public void Pick(Transform target)
+    // {
+    //     StartCoroutine(MoveHand(transform.position, target));
+
+    // }
+    public void PickUp()
     {
-        StartCoroutine(MoveHand(transform.position, target));
 
     }
     public void Back()
     {
-            // TeethManager.instance.UnlockTeeth();
+        // TeethManager.instance.UnlockTeeth();
 
-        
         StartCoroutine(MoveBack(transform.position));
     }
     IEnumerator MoveHand(Vector3 startPos, Transform endPos)
     {
-        Vector3 height = (startPos + endPos.position) / 2 + Vector3.up * 2;
+        Vector3 height = (startPos + endPos.position) / 2 + Vector3.up * 1;
         Quaternion rot = transform.rotation;
         for (float i = 0; i < time; i += Time.deltaTime)
         {
@@ -54,30 +61,42 @@ public class PickItem : MonoBehaviour
         transform.position = initPos;
         transform.rotation = initRot;
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("hand"))
-        {
-            Hand hand = other.GetComponent<Hand>();
-            // if (!hand.items.Contains(this))
-            // {
-            //     hand.items.Add(this);
-            // }
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("hand"))
-        {
-            Hand hand = other.GetComponent<Hand>();
-            // if (hand.items.Contains(this))
-            // {
-            //     hand.items.Remove(this);
-            // }
-        }
-    }
-    // private void Update()
+    // private void OnTriggerEnter(Collider other)
     // {
-    //     transform.position += transform.right * Time.deltaTime;
+    //     if (other.CompareTag("hand"))
+    //     {
+    //         Hand hand = other.GetComponent<Hand>();
+    //         // if (!hand.items.Contains(this))
+    //         // {
+    //         //     hand.items.Add(this);
+    //         // }
+    //     }
     // }
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if (other.CompareTag("hand"))
+    //     {
+    //         Hand hand = other.GetComponent<Hand>();
+    //         // if (hand.items.Contains(this))
+    //         // {
+    //         //     hand.items.Remove(this);
+    //         // }
+    //     }
+    // }
+    private void Update()
+    {
+        if (preKinematic == rb.isKinematic)
+        {
+            return;
+        }
+        preKinematic = rb.isKinematic;
+        if (preKinematic)
+        {
+            PickUp();
+        }
+        else
+        {
+            Back();
+        }
+    }
 }

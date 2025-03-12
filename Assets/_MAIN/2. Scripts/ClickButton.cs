@@ -17,8 +17,12 @@ public class ClickButton : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("finger"))
+        if (other.TryGetComponent<Finger>(out var finger))
         {
+            if (finger.fingerIndex != 1)
+            {
+                return;
+            }
             if (single)
             {
                 events.Invoke();
