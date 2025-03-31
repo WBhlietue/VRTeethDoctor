@@ -18,9 +18,10 @@ public class Zuu : MonoBehaviour
             Debug.Log(hit.collider.gameObject.name, hit.collider.gameObject);
             if (hit.collider.gameObject.TryGetComponent<ZuuTarget>(out var zuu))
             {
+                TeethManager.instance.tariaShadow.SetActive(false);
                 if (Vector3.Angle(hit.normal, zuu.normal) < zuu.offset)
                 {
-                    Debug.Log("asdfghjklwertyuio");
+                    Player.instance.rightHand.LockHand();
                     shahuur.OnShahah();
                     isShahah = true;
                 }

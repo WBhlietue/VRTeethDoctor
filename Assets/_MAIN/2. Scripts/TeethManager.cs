@@ -6,123 +6,123 @@ using UnityEngine;
 public class TeethManager : MonoBehaviour
 {
     public static TeethManager instance;
-    // public bool isOpen = false;
-    public List<Teeth> teeths = new List<Teeth>();
-    public Teeth selected = null;
-    public bool chekingTeeth = true;
-    public bool locked = false;
-    public Transform openHand;
-    public Transform handMovement;
-    public float rotateOffset;
-    public float handTrackSpeed;
-    public float handHeight;
-    public int fullCount;
-    public int status = 0;
-    public int currentCount;
-    // public Transform huvunTarget;
-    // public Transform huvun;
+    public bool isTaria;
+    public Transform shud;
+    public bool isLockTeeth = false;
+    Hand rightHand;
+    public float sensutive;
+    public float rotSensutive;
+    int direction = 1;
+    public float upTarget;
+    public float downTarget;
+    public float rotateTarget;
+    public int upDownCount;
+    public int rotateCount;
+    bool canRotate = false;
+    public Bahi tool;
+    public GameObject tariaShadow;
+    public GameObject bahiShadow;
     private void Awake()
     {
         instance = this;
     }
-    // public void OpenMonth()
-    // {
-    //     Player.instance.rightHand.transform.parent = openHand;
-    //     Player.instance.rightHand.GetComponent<Collider>().enabled = false;
-    //     Player.instance.rightHand.multSpeed = 5;
-    //     headAnimation.SetBool("open", true);
-    //     isOpen = true;
-    // }
-    // public void CloseMonth()
-    // {
-    //     Player.instance.rightHand.transform.parent = Player.instance.rHandParent;
-    //     Player.instance.rightHand.GetComponent<Collider>().enabled = true;
-    //     Player.instance.rightHand.multSpeed = 1;
-    //     headAnimation.SetBool("open", false);
-    //     isOpen = false;
-    // }
+    private void Start()
+    {
+        rightHand = Player.instance.rightHand;
+        GManager.instance.Delay(() =>
+        {
+            // tariaShadow.SetActive(false);
+            bahiShadow.SetActive(false);
+        }, 0);
+    }
+
     private void Update()
     {
-        if (locked)
+        Debug.Log(rightHand.rotateDelta);
+        if (!isLockTeeth)
         {
-            Vector3 r = selected.transform.localRotation.eulerAngles + Vector3.right * (handHeight - handMovement.position.y) * Time.deltaTime * handTrackSpeed;
-            if (r.x > 180)
+            return;
+        }
+        if (!canRotate)
+        {
+            shud.localEulerAngles -= Vector3.right * (rightHand.moveDelta.y * sensutive);
+            float x = shud.localEulerAngles.x;
+            if (x > 180)
             {
-                r.x -= 360;
+                x -= 360;
             }
-            handHeight = handMovement.position.y;
-            Debug.Log("raw: " + r);
-            if (r.x > rotateOffset)
+            if (x > upTarget)
             {
-                if (status == -1)
+                shud.localEulerAngles = Vector3.right * upTarget;
+                if (direction == 1)
                 {
-                    currentCount++;
+                    direction = -1;
+                    CheckUpDownCount();
                 }
-                status = 1;
-                r = Vector3.right * rotateOffset;
             }
-            if (r.x < -rotateOffset)
+            else if (x < -downTarget)
             {
-                if (status == 1)
+                shud.localEulerAngles = Vector3.right * -downTarget;
+                if (direction == -1)
                 {
-                    currentCount++;
+                    direction = 1;
+                    CheckUpDownCount();
                 }
-                status = -1;
-                r = Vector3.right * -rotateOffset;
             }
-            Debug.Log("final: " + r);
-            selected.transform.localRotation = Quaternion.Euler(r);
-            Debug.Log("A: " + selected.transform.localRotation.eulerAngles);
-            if (currentCount >= fullCount)
+        }
+        else
+        {
+            shud.parent.localEulerAngles -= Vector3.up * (rightHand.moveDelta.z * rotSensutive);
+            float x = shud.parent.localEulerAngles.y;
+            if (x > 180)
             {
-                GetTeeth();
+                x -= 360;
+            }
+            if (x > rotateTarget)
+            {
+                shud.parent.localEulerAngles = Vector3.up * rotateTarget;
+                if (direction == 1)
+                {
+                    direction = -1;
+                    CheckRotateCount();
+                }
+            }
+            else if (x < -rotateTarget)
+            {
+                shud.parent.localEulerAngles = Vector3.up * -rotateTarget;
+                if (direction == -1)
+                {
+                    direction = 1;
+                    CheckRotateCount();
+                }
             }
         }
     }
-    public void LockTeeth()
+
+    void CheckUpDownCount()
     {
-        if (selected != null)
+        upDownCount--;
+        if (upDownCount <= 0)
         {
-            locked = true;
-            chekingTeeth = false;
-            Player.instance.leftHand.transform.parent = selected.handPos;
-            Player.instance.leftHand.GetComponent<Collider>().enabled = false;
-            Player.instance.leftHand.multSpeed = 5;
-            handHeight = handMovement.position.y;
-            status = 0;
-            currentCount = 0;
+            shud.localEulerAngles = Vector3.zero;
+            canRotate = true;
         }
     }
-    public void UnlockTeeth()
+    void CheckRotateCount()
     {
-        // if (!locked || chekingTeeth)
-        // {
-        //     return;
-        // }
-        // locked = false;
-        // chekingTeeth = true;
-        // Player.instance.leftHand.transform.parent = Player.instance.lHandParent;
-        // Player.instance.leftHand.GetComponent<Collider>().enabled = true;
-        // Player.instance.leftHand.multSpeed = 1;
+        rotateCount--;
+        if (rotateCount <= 0)
+        {
+            GetTeeth();
+        }
     }
-    public void GetTeeth()
+    void GetTeeth()
     {
-        // if (!locked || chekingTeeth)
-        // {
-        //     return;
-        // }
-        // selected.isGet = true;
-        // huvun.transform.DOMove(huvunTarget.position, selected.blood.main.duration).SetEase(Ease.Linear);
-        // selected.blood.Play();
-        // locked = false;
-        // chekingTeeth = true;
-        // Player.instance.leftHand.transform.parent = Player.instance.lHandParent;
-        // selected.transform.parent = Player.instance.lPick.taregetPos;
-        // selected.transform.localPosition = Vector3.zero;
-        // selected.transform.localRotation = Quaternion.identity;
-        // Player.instance.leftHand.GetComponent<Collider>().enabled = true;
-        // Player.instance.leftHand.multSpeed = 1;
+        isLockTeeth = false;
+        tool.transform.parent.parent = null;
+        shud.parent = tool.transform.parent;
+        tool.Get();
     }
-    
+
 
 }

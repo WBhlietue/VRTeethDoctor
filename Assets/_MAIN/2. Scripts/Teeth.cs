@@ -14,8 +14,8 @@ public class Teeth : MonoBehaviour
     void Start()
     {
         // TeethManager.instance.teeths.Add(this);
-        outline = GetComponent<Outline>();
-        outline.enabled = false;
+        // outline = GetComponent<Outline>();
+        // outline.enabled = false;
     }
     public void Select()
     {

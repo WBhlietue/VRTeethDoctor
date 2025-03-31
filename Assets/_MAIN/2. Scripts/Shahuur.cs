@@ -17,7 +17,16 @@ public class Shahuur : MonoBehaviour
         {
             backShahuur.DOLocalMoveY(initValue, duration).OnComplete(() =>
             {
-                Debug.Log("Over");
+                Player.instance.rightHand.UnLockHand();
+                GManager.instance.Delay(() =>
+                {
+                    Timer.instance.Call(() =>
+                    {
+                        TeethManager.instance.isTaria = true;
+                        
+                        TeethManager.instance.bahiShadow.SetActive(true);
+                    });
+                }, 1f);
             });
         });
     }

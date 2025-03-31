@@ -10,6 +10,7 @@ public class MenuButtonManager : MonoBehaviour
     public Color selectedColor;
     public Color unSelectedColor;
     public float duration;
+    public string[] scenes;
     private void Start()
     {
         foreach (var item in btns)
@@ -32,7 +33,7 @@ public class MenuButtonManager : MonoBehaviour
     {
         if (selectedNum >= 0)
         {
-            SceneSwitch.instance.Call("VR 1");
+            SceneSwitch.instance.Call(scenes[selectedNum]);
         }
     }
 }
