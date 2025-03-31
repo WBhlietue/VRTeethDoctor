@@ -49,7 +49,7 @@ public class PickItem : MonoBehaviour
     }
     IEnumerator MoveBack(Vector3 startPos)
     {
-        Vector3 height = (startPos + initPos) / 2 + Vector3.up * 0.3f;
+        Vector3 height = (startPos + initPos) / 2 + Vector3.up * Vector3.Magnitude(startPos - initPos) / 5.0f;
         Quaternion rot = transform.rotation;
         for (float i = 0; i < time; i += Time.deltaTime)
         {

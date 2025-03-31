@@ -11,7 +11,9 @@ public class Bahi : MonoBehaviour
     public GameObject pick;
     void Update()
     {
-        Debug.Log(transform.up);
+        if(!TeethManager.instance.isTaria){
+            return;
+        }
         if (isGet)
         {
             return;
